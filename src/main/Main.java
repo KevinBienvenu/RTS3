@@ -34,6 +34,7 @@ public class Main {
 			resolutionY = 800;
 		}
 		try {
+			System.out.println("Gilles is back");
 			Game game = new Game("RTS3");
 			AppGameContainer app = new AppGameContainer( game );
 //			app.setDisplayMode(resolutionX, resolutionY,true);
