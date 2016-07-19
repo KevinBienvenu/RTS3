@@ -13,7 +13,7 @@ public class Game extends BasicGame {
 	}
 
 	@Override
-	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
+	public void render(GameContainer gc, Graphics g) throws SlickException {
 		// TODO Auto-generated method stub
 		
 	}
