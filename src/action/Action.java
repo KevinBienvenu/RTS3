@@ -13,8 +13,7 @@ public abstract class Action {
 	
 	public int id;
 	
-	public abstract boolean shouldStart(InputModel im, Object o);
-	public abstract boolean shouldStop(InputModel im, Object o);
+	public abstract boolean shouldUpdate(InputModel im, Object o);
 	public abstract void update(InputModel im,Objet o);
-	public abstract void undo(InputModel im,Objet o); // Reverse situation for player
+	
 }
