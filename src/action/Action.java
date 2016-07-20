@@ -1,6 +1,6 @@
 package action;
 
-import Utils.InputModel;
+import control.InputModel;
 import model.Objet;
 
 public abstract class Action {

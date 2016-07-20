@@ -4,22 +4,30 @@ import java.util.Vector;
 
 import org.newdawn.slick.Graphics;
 
-import Utils.InputModel;
 import action.Action;
+import control.InputModel;
 
-public abstract class Objet {
+public class Objet {
 	/*
 	 * Un objet est la classe de base dont hérite n'importe quel élément du monde
 	 * Il se compose d'un état (indexé par Index) ainsi qu'un vecteur d'actions possibles (Action)
 	 * Ainsi qu'une action courante (à méditer si une suffit)
 	 */
-	public float[] state;
+	public float x;
+	public float y;
+	
+	
+	
 	public Vector<Action> actions;// Par ordre de priorité
 	//public Vector<Action> currentActions;
 	/*
 	 *  On stipule qu'on  peut faire plus qu'une seule action à la fois , cad un seul état, à réfléchir
 	 *  pour les états incompatibles ...
 	 */
+	public Objet(float x, float y){
+		this.x = x;
+		this.y = y;
+	}
 	
 	public void update(InputModel im){
 		
@@ -30,7 +38,6 @@ public abstract class Objet {
 			}
 		}
 	}
-	public abstract void render(Graphics g);//TODO :  La aussi idéalement lecomportementdevrait être commun, à méditer
-	
+
 	
 }
