@@ -1,6 +1,6 @@
 package graphic;
 
-import org.newdawn.slick.geom.Rectangle;
+import control.InputModel;
 
 public class GraphicsData {
 
@@ -8,5 +8,5 @@ public class GraphicsData {
 	 * Load all the images in here
 	 */
 	
-	public static Rectangle selectionRectangle; 
+	public static InputModel currentPlayerInputModel; 
 }

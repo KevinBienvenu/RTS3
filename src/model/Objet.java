@@ -15,18 +15,21 @@ public class Objet {
 	 */
 	public float x;
 	public float y;
+	public String name;
 	
-	
+	public int team;
 	
 	public Vector<Action> actions;// Par ordre de priorité
 	//public Vector<Action> currentActions;
 	/*
-	 *  On stipule qu'on  peut faire plus qu'une seule action à la fois , cad un seul état, à réfléchir
-	 *  pour les états incompatibles ...
+	 *  Les actions sont des actions possibles, elles sont liées à des inputs
+	 *  ou automatique
 	 */
-	public Objet(float x, float y){
+	public Objet(float x, float y, String name, int team){
 		this.x = x;
 		this.y = y;
+		this.name = name;
+		this.team = team;
 	}
 	
 	public void update(InputModel im){

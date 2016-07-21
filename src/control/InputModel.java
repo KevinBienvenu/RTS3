@@ -6,11 +6,16 @@ import java.util.Vector;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
 
+import game.Game;
+import model.Objet;
+
 public class InputModel implements java.io.Serializable{
 
 	/**
 	 * Handle selection rectangle ( it is part of inputs at the end ...)
 	 */
+	
+	public int team;
 	
 	public Vector<Integer> down;
 	public Vector<Integer> pressed;
@@ -18,13 +23,17 @@ public class InputModel implements java.io.Serializable{
 	public float y;
 	
 	public Rectangle selectionRectangle ;
+	public Vector<Objet> selection;
 	private float anchorX;
 	private float anchorY;
 	
-	public InputModel(){
+	public InputModel(int team){
 		down = new Vector<Integer>();
 		pressed = new Vector<Integer>();
 		
+		this.team = team;
+		
+		selection = new Vector<Objet>();
 		selectionRectangle = new Rectangle(-1000f,-1000f,0.1f,0.1f);
 	}
 
@@ -55,6 +64,7 @@ public class InputModel implements java.io.Serializable{
 		}
 		
 		updateSelectionRectangle();
+		updateSelection(Game.world.objets);
 	}
 	
 	private void updateSelectionRectangle() {
@@ -93,7 +103,23 @@ public class InputModel implements java.io.Serializable{
 		return pressed.contains(key);
 	}
 	
-	
+	private void updateSelection(Vector<Objet> objects){
+		if(!this.rectangleIsNone()){
+			this.selection.clear();
+		}
+		for(Objet o : objects){
+			// suppression de la selection courant
+			// ajout vis à vis du rectangle
+			if(o.team == this.team 
+					&& o.x>selectionRectangle.getMinX()
+					&& o.x<selectionRectangle.getMaxX()
+					&& o.y>selectionRectangle.getMinY()
+					&& o.y<selectionRectangle.getMaxY()
+					&& !this.selection.contains(o)){
+				this.selection.addElement(o);
+			}
+		}
+	}
 	
 
 

@@ -22,14 +22,13 @@ public class Game extends BasicGame {
 	SoundEngine soundEngine;
 	Controller controller;
 	
-	World	world;
+	public static World world;
 	
 	public Game(String title) {
 		super(title);
-		// TODO Auto-generated constructor stub
 		
 		//Init all the Object Pools
-		// Init all the engines
+		// Init all the engines (except sounds and graphisms - do that in init()
 		
 	}
 
@@ -50,8 +49,11 @@ public class Game extends BasicGame {
 		soundEngine = new SoundEngine();
 		controller = new Controller(2);
 		
-		GraphicsData.selectionRectangle = controller.getSelectionRectangleCurrentPlayer();
+		GraphicsData.currentPlayerInputModel = controller.getCurrentPlayerInputModel();
 		world = new World(2,new Vector<Objet>());
+		world.objets.add(new Objet(100,100,"philippe", 1));
+		world.objets.add(new Objet(200,100,"marcel", 0));
+		world.objets.add(new Objet(100,300,"roger", 2));
 	}
 
 	@Override
