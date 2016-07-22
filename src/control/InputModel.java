@@ -6,6 +6,7 @@ import java.util.Vector;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
 
+import control.KeyMapper.KeyEnum;
 import game.Game;
 import model.Objet;
 
@@ -17,8 +18,8 @@ public class InputModel implements java.io.Serializable{
 	
 	public int team;
 	
-	public Vector<Integer> down;
-	public Vector<Integer> pressed;
+	public Vector<KeyEnum> down;
+	public Vector<KeyEnum> pressed;
 	public float x;
 	public float y;
 	
@@ -27,9 +28,10 @@ public class InputModel implements java.io.Serializable{
 	private float anchorX;
 	private float anchorY;
 	
+	
 	public InputModel(int team){
-		down = new Vector<Integer>();
-		pressed = new Vector<Integer>();
+		down = new Vector<KeyEnum>();
+		pressed = new Vector<KeyEnum>();
 		
 		this.team = team;
 		
@@ -40,40 +42,41 @@ public class InputModel implements java.io.Serializable{
 	/*
 	 * On a pas besoin de le réinstancier à chaque fois ...
 	 */
-	public void update(Input input){
+	public void update(Input input, KeyMapper km){
 		down.clear();
 		pressed.clear();
 		x = input.getMouseX();
 		y = input.getMouseY();
 		// IL y a surement plus simple et moins coûteux
-		// TODO : Ajouter ratio space
-		for(int i=0; i<250;i++){
-			if(input.isKeyDown(i)){
-				down.addElement(i);
-			}
+		for(Integer i : km.mapping.keySet()){
 			if(input.isKeyPressed(i)){
-				down.addElement(i);
+				this.pressed.addElement(km.mapping.get(i));
+			}
+			if(input.isKeyDown(i)){
+				this.down.addElement(km.mapping.get(i));
 			}
 		}
 		// Mouse
-		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
-			pressed.addElement(Input.MOUSE_LEFT_BUTTON);
-		}
-		if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
-			down.addElement(Input.MOUSE_LEFT_BUTTON);
+		for(int i = 0; i<3; i++){
+			if(input.isMousePressed(i)){
+				pressed.addElement(km.mapping.get(i));
+			}
+			if(input.isMouseButtonDown(i)){
+				down.addElement(km.mapping.get(i));
+			}
 		}
 		
 		updateSelectionRectangle();
-		updateSelection(Game.world.objets);
+		SelectionHelper.updateSelection(this, Game.world.objets);
 	}
 	
 	private void updateSelectionRectangle() {
-		if(!isDown(Input.MOUSE_LEFT_BUTTON) ){
+		if(!isDown(KeyEnum.LeftClick)){
 			resetRectangle();
 			return;
 		}
 
-		if (isPressed(Input.MOUSE_LEFT_BUTTON)) {
+		if (isPressed(KeyEnum.LeftClick)) {
 
 			selectionRectangle.setBounds(x,y,x+0.1f,y+0.1f);
 			anchorX = x;
@@ -96,30 +99,14 @@ public class InputModel implements java.io.Serializable{
 	public boolean rectangleIsNone(){
 		return selectionRectangle.getX()==-1000f;
 	}
-	public boolean isDown(int key){
+	public boolean isDown(KeyEnum key){
 		return down.contains(key);
 	}
-	public boolean isPressed(int key){
+	public boolean isPressed(KeyEnum key){
 		return pressed.contains(key);
 	}
 	
-	private void updateSelection(Vector<Objet> objects){
-		if(!this.rectangleIsNone()){
-			this.selection.clear();
-		}
-		for(Objet o : objects){
-			// suppression de la selection courant
-			// ajout vis à vis du rectangle
-			if(o.team == this.team 
-					&& o.x>selectionRectangle.getMinX()
-					&& o.x<selectionRectangle.getMaxX()
-					&& o.y>selectionRectangle.getMinY()
-					&& o.y<selectionRectangle.getMaxY()
-					&& !this.selection.contains(o)){
-				this.selection.addElement(o);
-			}
-		}
-	}
+	
 	
 
 

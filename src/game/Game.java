@@ -52,8 +52,9 @@ public class Game extends BasicGame {
 		GraphicsData.currentPlayerInputModel = controller.getCurrentPlayerInputModel();
 		world = new World(2,new Vector<Objet>());
 		world.objets.add(new Objet(100,100,"philippe", 1));
-		world.objets.add(new Objet(200,100,"marcel", 0));
-		world.objets.add(new Objet(100,300,"roger", 2));
+		world.objets.add(new Objet(200,100,"marcel", 1));
+		world.objets.add(new Objet(100,300,"roger", 1));
+		world.objets.add(new Objet(200,300,"roger", 1));
 	}
 
 	@Override

@@ -12,8 +12,10 @@ public class Controller {
 	 */
 	InputModel[] inputs;
 	int idCurrentPlayer = 1;
+	KeyMapper keymapper;
 	
 	public Controller(int nPlayers){
+		keymapper = new KeyMapper();
 		inputs = new InputModel[nPlayers];
 		for(int i = 0; i< inputs.length;i++){
 			inputs[i] = new InputModel(i);
@@ -21,7 +23,7 @@ public class Controller {
 	}
 	public void getInputs(Input i){
 		
-		inputs[idCurrentPlayer].update(i);
+		inputs[idCurrentPlayer].update(i, keymapper);
 		for(int idx = 0 ; idx<inputs.length; idx++){
 			if(idx!=idCurrentPlayer){
 				/*
@@ -33,5 +35,6 @@ public class Controller {
 	public InputModel getCurrentPlayerInputModel(){
 		return inputs[idCurrentPlayer];
 	}
+	
 	
 }
