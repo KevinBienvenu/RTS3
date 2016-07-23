@@ -30,8 +30,8 @@ public class Main {
 			resolutionX = (int)screenSize.getWidth();		
 			resolutionY = (int)screenSize.getHeight();
 		} else {
-			resolutionX = 1200;		
-			resolutionY = 800;
+			resolutionX = 800;		
+			resolutionY = 600;
 		}
 		try {
 			System.out.println("Gilles is back");

@@ -1,5 +1,6 @@
 package game;
 
+
 import java.util.Vector;
 
 import org.newdawn.slick.BasicGame;
@@ -7,10 +8,13 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+import action.Action;
+import action.ActionDefault;
+import action.Deplacement;
 import control.Controller;
+import data.Data;
 import graphic.GraphicEngine;
 import graphic.GraphicsData;
-import model.Objet;
 import physic.PhysicEngine;
 import sound.SoundEngine;
 
@@ -24,6 +28,9 @@ public class Game extends BasicGame {
 	
 	public static World world;
 	
+	// TODO : à mettre au bon endroit
+	public static Data data;
+	
 	public Game(String title) {
 		super(title);
 		
@@ -34,7 +41,6 @@ public class Game extends BasicGame {
 
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-		// TODO Auto-generated method stub
 		// Call the graphic engine
 		GraphicEngine.update(g, world);
 	}
@@ -50,11 +56,16 @@ public class Game extends BasicGame {
 		controller = new Controller(2);
 		
 		GraphicsData.currentPlayerInputModel = controller.getCurrentPlayerInputModel();
-		world = new World(2,new Vector<Objet>());
-		world.objets.add(new Objet(100,100,"philippe", 1));
-		world.objets.add(new Objet(200,100,"marcel", 1));
-		world.objets.add(new Objet(100,300,"roger", 1));
-		world.objets.add(new Objet(200,300,"roger", 1));
+		
+		// TODO : à virer et/ou à réarranger
+		// => les datas sont à créer pour chaque joueur/ équipe
+		data = new Data();
+		// => création des actions, faudra trouver une meilleure manière d'y accéder ceci dit...
+		Action.actions = new Vector<Action>();
+		Action.actions.add(new ActionDefault());
+		Action.actions.add(new Deplacement());
+		
+		world = new World(2,new Map());
 	}
 
 	@Override
@@ -72,7 +83,7 @@ public class Game extends BasicGame {
 		
 	}
 	public void updateWorld(){
-		world.update();
+		world.update(controller.getCurrentPlayerInputModel());
 	}
 	
 	

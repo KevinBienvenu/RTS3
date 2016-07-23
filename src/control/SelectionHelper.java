@@ -35,8 +35,9 @@ public class SelectionHelper {
 			float distanceMinimale = 0, distance = 0;
 			for(Objet o: objects){
 				distance = (o.x-im.x)*(o.x-im.x)+(o.y-im.y)*(o.y-im.y);
-				if((om == null && distance<seuilDistanceClick)
-						|| (om != null && distance<distanceMinimale)){
+				if(o.team == im.team &&(
+						(om == null && distance<seuilDistanceClick)
+						|| (om != null && distance<distanceMinimale))){
 					om = o;
 					distanceMinimale = distance;
 				}
