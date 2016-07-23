@@ -54,6 +54,15 @@ public class World {
 		}
 		
 	}
+	
+	public Objet getObjetById(int id){
+		for(Objet o : objets){
+			if(o.id == id){
+				return o;
+			}
+		}
+		return null;
+	}
 	// TODO : Idée : Etre totalement générique entre une IA et un joueur réel (Pas de switch dégueu entre lan et ia).
 	
 	// TODO : Déplacement en groupe utilisant les papiers qu'on a lu

@@ -25,7 +25,7 @@ public class ActionDefault extends Action{
 	public void handleChangeAction(InputModel im, Objet o) {
 		// gestion du click droit (déplacement uniquement)
 		if(im.selection.contains(o) && im.isPressed(KeyEnum.RightClick)){
-			o.changeAction(Action.actions.get(1), im);
+			o.changeAction(EnumAction.ActionMove, im);
 		}
 		
 	}

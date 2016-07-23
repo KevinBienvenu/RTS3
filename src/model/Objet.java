@@ -1,11 +1,13 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Vector;
 
 import action.Action;
 import action.ActionDefault;
-import action.Deplacement;
+import action.ActionMove;
+import action.EnumAction;
 import control.InputModel;
 import data.Attributs;
 import game.Game;
@@ -24,17 +26,22 @@ public class Objet implements Serializable{
 	public String name;
 	public int team;
 	
+	
+	
 	// Liste d'actions et action courante
-	public Vector<Action> actions;
-	private Action actionCourante;
+	public Vector<EnumAction> actions;
+	private EnumAction actionCourante;
 
 	/*
 	 * Attributs des actions, ces attributs doivent être dans objet, car ils sont propres
 	 * à chaque objet, et font partie des données à envoyer lors des resynchros.
 	 * Ces attributs sont des variables de travail et peuvent être utilisés par plusieurs actions différentes
 	 */
+	
 	public Vector<Integer> casesPathfinding;
 	public float xTarget, yTarget;
+	public int idTarget;
+	public int idWork;
 	
 	public Objet(float x, float y, String name, int team){
 		this.x = x;
@@ -42,16 +49,30 @@ public class Objet implements Serializable{
 		this.name = name;
 		this.team = team;
 		// TODO : créer les actions uniques et les linker plutôt que de les créer, ici on teste alors c'est bon...
-		this.actionCourante = Action.actions.get(0);
-		this.actions = Action.actions;
+		this.actionCourante = EnumAction.ActionDefault;
+		this.actions = new Vector<EnumAction>();
+		
+		// Temporary
+		for(EnumAction action : EnumAction.values()){
+			this.actions.add(action);
+		}
+		
 	}
 	
 	public void update(InputModel im){
 		
-		if(actionCourante.shouldUpdate(im, this)){
-			actionCourante.update(im, this);
+		if(getCurrentAction().shouldUpdate(im, this)){
+			getCurrentAction().update(im, this);
 		}
 	}
+	
+	/*
+	 * TODO : Remove it
+	 */
+	public Action getCurrentAction(){
+		return Action.getAction(actionCourante);
+	}
+	
 	
 	public float getAttribut(Attributs att){
 		if(Game.data.datas.containsKey(this.name)){
@@ -77,11 +98,11 @@ public class Objet implements Serializable{
 		y = newY;
 	}
 
-	public void changeAction(Action action, InputModel im){
-		// on vérifie que c'est possible
+	public void changeAction(EnumAction action, InputModel im){
+		// On vérifie que c'est possible
 		if(this.actions.contains(action)){
-			action.init(im, this);
 			this.actionCourante = action;
+			getCurrentAction().init(im, this);
 		} else {
 			System.out.println("changement d'action impossible : "+action);
 		}

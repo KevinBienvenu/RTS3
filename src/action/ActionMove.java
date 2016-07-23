@@ -8,7 +8,7 @@ import main.Main;
 import model.Objet;
 import pathfinding.Case;
 
-public class Deplacement extends Action{
+public class ActionMove extends Action{
 
 	@Override
 	public void init(InputModel im, Objet o) {
@@ -16,7 +16,8 @@ public class Deplacement extends Action{
 		o.xTarget = im.x;
 		o.yTarget = im.y;
 		o.casesPathfinding = Game.world.grid.pathfinding(o.x, o.y, im.x, im.y);
-	}
+		o.idWork = Game.world.grid.getCase(o.xTarget, o.yTarget).id;
+	}	
 
 	@Override
 	public boolean shouldUpdate(InputModel im, Object o) {
@@ -40,11 +41,11 @@ public class Deplacement extends Action{
 	public void handleChangeAction(InputModel im, Objet o) {
 		// condition d'arrêt
 		if((o.x-o.xTarget)*(o.x-o.xTarget)+(o.y-o.yTarget)*(o.y-o.yTarget)<10){
-			o.changeAction(Action.actions.get(0), im);
+			o.changeAction(EnumAction.ActionDefault, im);
 		}
 		// gestion du click droit (déplacement uniquement)
 		if(im.selection.contains(o) && im.isPressed(KeyEnum.RightClick)){
-			o.changeAction(Action.actions.get(1), im);
+			o.changeAction(EnumAction.ActionMove, im);
 		}
 	}
 

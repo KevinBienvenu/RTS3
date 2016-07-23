@@ -10,7 +10,8 @@ import org.newdawn.slick.SlickException;
 
 import action.Action;
 import action.ActionDefault;
-import action.Deplacement;
+import action.ActionMove;
+import action.ActionFollow;
 import control.Controller;
 import data.Data;
 import graphic.GraphicEngine;
@@ -61,10 +62,8 @@ public class Game extends BasicGame {
 		// => les datas sont à créer pour chaque joueur/ équipe
 		data = new Data();
 		// => création des actions, faudra trouver une meilleure manière d'y accéder ceci dit...
-		Action.actions = new Vector<Action>();
-		Action.actions.add(new ActionDefault());
-		Action.actions.add(new Deplacement());
-		
+		// Idéalement faut un helper pour tout loader ça sera plus clair
+		Action.loadActions();
 		world = new World(2,new Map());
 	}
 
