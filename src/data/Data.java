@@ -8,6 +8,8 @@ public class Data {
 	
 	public HashMap<String, DataObjet> datas;
 	
+	public static final int nullValue = -1;
+	
 	public Data(){
 		datas = new HashMap<String, DataObjet>();
 		// add the unit

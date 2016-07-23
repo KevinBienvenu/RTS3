@@ -1,6 +1,6 @@
 package game;
 
-import java.util.Vector;
+import java.util.HashMap;
 
 import action.Action;
 import control.InputModel;
@@ -16,7 +16,9 @@ public class World {
 	
 	public float sizeX, sizeY;
 	
-	public Vector<Objet> objets; // Tous les objets en jeu
+	public static int idObjet = 0;
+	public static int generateUniqueId(){idObjet++;return idObjet;}
+	public HashMap<Integer, Objet> objets; // Tous les objets en jeu
 	public Action[] actions ; // On instanciera une seule fois toutes les actions du monde ...
 	public MapGrid grid; // La grille pour le pathfinding
 	
@@ -38,7 +40,7 @@ public class World {
 		 * Loop over vector of objets and find cells occupied by buildings
 		 */
 		grid = new MapGrid(0,sizeX,0,sizeY);
-		for(Objet o : this.objets){
+		for(Objet o : this.objets.values()){
 			// TODO : updater la grille en fonction des objets inamovibles
 		}
 		
@@ -49,20 +51,22 @@ public class World {
 		 * 
 		 * Update the world state
 		 */
-		for(Objet o : this.objets){
+		for(Objet o : this.objets.values()){
 			o.update(im);
 		}
 		
 	}
 	
 	public Objet getObjetById(int id){
-		for(Objet o : objets){
+		for(Objet o : objets.values()){
 			if(o.id == id){
 				return o;
 			}
 		}
 		return null;
 	}
+	
+	
 	// TODO : Idée : Etre totalement générique entre une IA et un joueur réel (Pas de switch dégueu entre lan et ia).
 	
 	// TODO : Déplacement en groupe utilisant les papiers qu'on a lu

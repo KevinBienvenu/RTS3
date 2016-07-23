@@ -1,6 +1,6 @@
 package control;
 
-import java.util.Vector;
+import java.util.Collection;
 
 import control.KeyMapper.KeyEnum;
 import model.Objet;
@@ -9,7 +9,7 @@ public class SelectionHelper {
 	
 	public static float seuilDistanceClick = 150f;
 
-	public static void updateSelection(InputModel im, Vector<Objet> objects){
+	public static void updateSelection(InputModel im, Collection<Objet> objects){
 		if(!im.rectangleIsNone() && !im.isDown(KeyEnum.AjouterSelection)){
 			im.selection.clear();
 		}

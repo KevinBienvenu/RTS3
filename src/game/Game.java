@@ -11,7 +11,6 @@ import org.newdawn.slick.SlickException;
 import action.Action;
 import action.ActionDefault;
 import action.ActionMove;
-import action.ActionFollow;
 import control.Controller;
 import data.Data;
 import graphic.GraphicEngine;
@@ -31,6 +30,7 @@ public class Game extends BasicGame {
 	
 	// TODO : à mettre au bon endroit
 	public static Data data;
+
 	
 	public Game(String title) {
 		super(title);

@@ -3,6 +3,7 @@ package action;
 import control.InputModel;
 import control.KeyMapper.KeyEnum;
 import data.Attributs;
+import data.Data;
 import game.Game;
 import main.Main;
 import model.Objet;
@@ -13,10 +14,9 @@ public class ActionMove extends Action{
 	@Override
 	public void init(InputModel im, Objet o) {
 		// TODO : gérer le déplacement en groupe
-		o.xTarget = im.x;
-		o.yTarget = im.y;
+		o.idTarget = im.idObjetMouse;
 		o.casesPathfinding = Game.world.grid.pathfinding(o.x, o.y, im.x, im.y);
-		o.idWork = Game.world.grid.getCase(o.xTarget, o.yTarget).id;
+		o.idWork = Game.world.grid.getCase(im.x, im.y).id;
 	}	
 
 	@Override
@@ -32,15 +32,16 @@ public class ActionMove extends Action{
 			Case c = Game.world.grid.getCase(o.casesPathfinding.get(0));
 			moveToward(o,c.x,c.y);
 		} else {
-			moveToward(o,o.xTarget,o.yTarget);
+			Objet o2 = Game.world.objets.get(o.idTarget);
+			moveToward(o,o2.x,o2.y);
 		}
-
 	}
 
 	@Override
 	public void handleChangeAction(InputModel im, Objet o) {
 		// condition d'arrêt
-		if((o.x-o.xTarget)*(o.x-o.xTarget)+(o.y-o.yTarget)*(o.y-o.yTarget)<10){
+		Objet o2 = Game.world.objets.get(o.idTarget);
+		if((o.x-o2.x)*(o.x-o2.x)+(o.y-o2.y)*(o.y-o2.y)<10){
 			o.changeAction(EnumAction.ActionDefault, im);
 		}
 		// gestion du click droit (déplacement uniquement)
@@ -51,7 +52,7 @@ public class ActionMove extends Action{
 
 
 
-	private void moveToward(Objet o, float tx, float ty){
+	protected void moveToward(Objet o, float tx, float ty){
 
 		float newvx, newvy;
 		newvx = tx-o.x;
@@ -91,6 +92,15 @@ public class ActionMove extends Action{
 		o.setVXVY(newvx, newvy);
 		o.setXY(newX, newY);
 
+	}
+
+	@Override
+	public boolean checkChangeAction(InputModel im, Objet o) {
+		// gestion du click droit (déplacement uniquement)
+		if(im.selection.contains(o) && im.isPressed(KeyEnum.RightClick) && im.idObjetMouse==Data.nullValue){
+			return true;
+		}
+		return false;
 	}
 
 

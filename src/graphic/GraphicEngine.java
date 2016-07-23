@@ -31,7 +31,7 @@ public class GraphicEngine {
 	
 	public static void update(Graphics g, World world){
 		// Draw selection rectangle
-		for(Objet o : world.objets){
+		for(Objet o : world.objets.values()){
 			draw(g, o);
 		}
 		g.setColor(Color.green);

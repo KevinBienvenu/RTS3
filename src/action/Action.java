@@ -21,10 +21,12 @@ public abstract class Action {
 	public abstract boolean shouldUpdate(InputModel im, Object o);
 	public abstract void updateAction(InputModel im, Objet o);
 	public abstract void handleChangeAction(InputModel im, Objet o);
+	public abstract boolean checkChangeAction(InputModel im, Objet o);
 	public final void update(InputModel im,Objet o){
 		updateAction(im, o);
 		handleChangeAction(im, o);
 	}
+	
 	
 	public static HashMap<EnumAction,Action> actions;
 	

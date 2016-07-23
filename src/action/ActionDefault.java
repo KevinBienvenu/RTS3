@@ -23,11 +23,14 @@ public class ActionDefault extends Action{
 
 	@Override
 	public void handleChangeAction(InputModel im, Objet o) {
-		// gestion du click droit (déplacement uniquement)
-		if(im.selection.contains(o) && im.isPressed(KeyEnum.RightClick)){
-			o.changeAction(EnumAction.ActionMove, im);
-		}
 		
+		
+	}
+
+	@Override
+	public boolean checkChangeAction(InputModel im, Objet o) {
+		// TODO appui sur la touche stop
+		return false;
 	}
 
 }

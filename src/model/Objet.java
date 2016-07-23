@@ -1,16 +1,15 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Vector;
 
 import action.Action;
-import action.ActionDefault;
-import action.ActionMove;
 import action.EnumAction;
 import control.InputModel;
 import data.Attributs;
+import data.Data;
 import game.Game;
+import game.World;
 
 public class Objet implements Serializable{
 	/*
@@ -39,7 +38,6 @@ public class Objet implements Serializable{
 	 */
 	
 	public Vector<Integer> casesPathfinding;
-	public float xTarget, yTarget;
 	public int idTarget;
 	public int idWork;
 	
@@ -51,7 +49,7 @@ public class Objet implements Serializable{
 		// TODO : créer les actions uniques et les linker plutôt que de les créer, ici on teste alors c'est bon...
 		this.actionCourante = EnumAction.ActionDefault;
 		this.actions = new Vector<EnumAction>();
-		
+		this.id = World.generateUniqueId();
 		// Temporary
 		for(EnumAction action : EnumAction.values()){
 			this.actions.add(action);
@@ -60,9 +58,19 @@ public class Objet implements Serializable{
 	}
 	
 	public void update(InputModel im){
-		
+		// au début on vérifie si on doit pas changer d'action
+		for(EnumAction action : this.actions){
+			if(Action.actions.get(action).checkChangeAction(im, this)){
+				this.changeAction(action, im);
+			}
+		}
+		// update l'état de l'action courante
 		if(getCurrentAction().shouldUpdate(im, this)){
 			getCurrentAction().update(im, this);
+		}
+		// check mouseOver
+		if(isMouseOver(im)){
+			im.idObjetMouse = id;
 		}
 	}
 	
@@ -79,12 +87,12 @@ public class Objet implements Serializable{
 			if(Game.data.datas.get(this.name).attributs.containsKey(att)){
 				return Game.data.datas.get(this.name).attributs.get(att);
 			} else {
-				System.out.println("l'objet "+name+" ne contient pas d'attribut "+att);
-				return -1;
+				//System.out.println("l'objet "+name+" ne contient pas d'attribut "+att);
+				return Data.nullValue;
 			}
 		} else {
-			System.out.println("données introuvables pour l'objet :"+name);
-			return -1;
+			//System.out.println("données introuvables pour l'objet :"+name);
+			return Data.nullValue;
 		}
 	}
 
@@ -106,6 +114,22 @@ public class Objet implements Serializable{
 		} else {
 			System.out.println("changement d'action impossible : "+action);
 		}
+	}
+	
+	public boolean isMouseOver(InputModel im){
+		if(getAttribut(Attributs.isRect)!=Data.nullValue){
+			// selection box rectangle
+			
+		} else {
+			// selection box circle
+			float radius = getAttribut(Attributs.radius);
+			if(radius != Data.nullValue){
+				if((im.x-x)*(im.x-x)+(im.y-y)*(im.y-y)<radius*radius){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 }

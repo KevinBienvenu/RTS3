@@ -7,6 +7,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
 
 import control.KeyMapper.KeyEnum;
+import data.Data;
 import game.Game;
 import model.Objet;
 
@@ -27,6 +28,9 @@ public class InputModel implements java.io.Serializable{
 	public Vector<Objet> selection;
 	private float anchorX;
 	private float anchorY;
+	
+	public int idObjetMouse;
+
 	
 	
 	public InputModel(int team){
@@ -65,9 +69,13 @@ public class InputModel implements java.io.Serializable{
 				down.addElement(km.mapping.get(i));
 			}
 		}
-		
+		// On vérifie l'objet sous la souris
+		idObjetMouse = Data.nullValue;
+		for(Objet o : Game.world.objets.values()){
+			
+		}
 		updateSelectionRectangle();
-		SelectionHelper.updateSelection(this, Game.world.objets);
+		SelectionHelper.updateSelection(this, Game.world.objets.values());
 	}
 	
 	private void updateSelectionRectangle() {
