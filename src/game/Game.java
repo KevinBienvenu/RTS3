@@ -15,6 +15,7 @@ import control.Controller;
 import data.Data;
 import graphic.GraphicEngine;
 import graphic.GraphicsData;
+import model.ObjetPool;
 import physic.PhysicEngine;
 import sound.SoundEngine;
 
@@ -51,7 +52,7 @@ public class Game extends BasicGame {
 		// TODO Auto-generated method stub
 		
 		//Init engines
-		
+		ObjetPool.init();
 		physicEngine = new PhysicEngine();
 		soundEngine = new SoundEngine();
 		controller = new Controller(2);
@@ -65,6 +66,7 @@ public class Game extends BasicGame {
 		// Idéalement faut un helper pour tout loader ça sera plus clair
 		Action.loadActions();
 		world = new World(2,new Map());
+		
 	}
 
 	@Override

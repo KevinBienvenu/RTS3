@@ -9,7 +9,7 @@ public class SelectionHelper {
 	
 	public static float seuilDistanceClick = 150f;
 
-	public static void updateSelection(InputModel im, Collection<Objet> objects){
+	public static void updateSelection(InputModel im, Objet[] objects){
 		if(!im.rectangleIsNone() && !im.isDown(KeyEnum.AjouterSelection)){
 			im.selection.clear();
 		}

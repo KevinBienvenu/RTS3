@@ -7,6 +7,7 @@ import data.Data;
 import game.Game;
 import main.Main;
 import model.Objet;
+import model.ObjetPool;
 import pathfinding.Case;
 
 public class ActionMove extends Action{
@@ -14,7 +15,7 @@ public class ActionMove extends Action{
 	@Override
 	public void init(InputModel im, Objet o) {
 		// TODO : gérer le déplacement en groupe
-		o.idTarget = im.idObjetMouse;
+		//o.idTarget = im.idObjetMouse;
 		o.casesPathfinding = Game.world.grid.pathfinding(o.x, o.y, im.x, im.y);
 		o.idWork = Game.world.grid.getCase(im.x, im.y).id;
 	}	
@@ -22,7 +23,7 @@ public class ActionMove extends Action{
 	@Override
 	public boolean shouldUpdate(InputModel im, Object o) {
 		// TODO : Gérer les cas où le déplacement ne devrait pas avoir lieu
-		// exemple : état gelé
+		// exemple : état gelé,ou pas de target
 		return true;
 	}
 
@@ -32,7 +33,7 @@ public class ActionMove extends Action{
 			Case c = Game.world.grid.getCase(o.casesPathfinding.get(0));
 			moveToward(o,c.x,c.y);
 		} else {
-			Objet o2 = Game.world.objets.get(o.idTarget);
+			Objet o2 = Game.world.getObjetById(o.idTarget);
 			moveToward(o,o2.x,o2.y);
 		}
 	}
@@ -40,7 +41,7 @@ public class ActionMove extends Action{
 	@Override
 	public void handleChangeAction(InputModel im, Objet o) {
 		// condition d'arrêt
-		Objet o2 = Game.world.objets.get(o.idTarget);
+		Objet o2 = ObjetPool.getObjets()[o.idTarget];
 		if((o.x-o2.x)*(o.x-o2.x)+(o.y-o2.y)*(o.y-o2.y)<10){
 			o.changeAction(EnumAction.ActionDefault, im);
 		}
@@ -98,6 +99,7 @@ public class ActionMove extends Action{
 	public boolean checkChangeAction(InputModel im, Objet o) {
 		// gestion du click droit (déplacement uniquement)
 		if(im.selection.contains(o) && im.isPressed(KeyEnum.RightClick) && im.idObjetMouse==Data.nullValue){
+			o.idTarget = Objet.getObjet(im.x, im.y, "checkpoint", o.team).id;
 			return true;
 		}
 		return false;

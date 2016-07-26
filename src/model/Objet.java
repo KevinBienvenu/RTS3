@@ -25,6 +25,10 @@ public class Objet implements Serializable{
 	public String name;
 	public int team;
 	
+	// Allocation in memory
+	public boolean isInWorld;
+	
+	
 	
 	
 	// Liste d'actions et action courante
@@ -41,7 +45,12 @@ public class Objet implements Serializable{
 	public int idTarget;
 	public int idWork;
 	
-	public Objet(float x, float y, String name, int team){
+	protected Objet(float x, float y, String name, int team){
+		this.id = World.generateUniqueId();
+		this.init(x,y,name,team);
+		
+	}
+	public void init(float x, float y ,String name, int team){
 		this.x = x;
 		this.y = y;
 		this.name = name;
@@ -49,12 +58,15 @@ public class Objet implements Serializable{
 		// TODO : créer les actions uniques et les linker plutôt que de les créer, ici on teste alors c'est bon...
 		this.actionCourante = EnumAction.ActionDefault;
 		this.actions = new Vector<EnumAction>();
-		this.id = World.generateUniqueId();
 		// Temporary
 		for(EnumAction action : EnumAction.values()){
 			this.actions.add(action);
 		}
-		
+	}
+	public static Objet getObjet(float x, float y,String name, int team){
+		Objet toReturn = ObjetPool.pull();
+		toReturn.init(x, y, name, team);
+		return toReturn;
 	}
 	
 	public void update(InputModel im){

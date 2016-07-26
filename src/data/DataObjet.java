@@ -2,49 +2,32 @@ package data;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 
 public class DataObjet {
-
 	// Generic fields
-	public HashMap<Attributs, Float> attributs;
+	public HashMap<Attributs, Float> attributs = new HashMap<Attributs, Float>();
 	private static String location ="";
-
+	public static Gson gson = new Gson();
 	public DataObjet(String filename){
-
-		String fichier = location+filename;
-		attributs = new HashMap<Attributs, Float>();
-		// Constructeur par défaut, associe le mapping standard
-		try{
-			InputStream ips=new FileInputStream(fichier); 
-			InputStreamReader ipsr=new InputStreamReader(ips);
-			BufferedReader br=new BufferedReader(ipsr);
-			String ligne;
-			String[] tab;
-			while ((ligne=br.readLine())!=null){
-				if(!ligne.contains("_")){
-					throw new Exception();
-				}
-				tab = ligne.split("_");
-				attributs.put(Attributs.valueOf(tab[0]),Float.parseFloat(tab[1]));
-			}
-
-			br.close(); 
-		}		
-		catch (Exception e){
+		try {
+			attributs = gson.fromJson(new JsonReader(new FileReader(location+filename)), new TypeToken<HashMap<Attributs, Float>>(){}.getType());
+			System.out.println(this);
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
 	}
-	
 	public String toString(){
-		String s = "";
-		for(Attributs a : attributs.keySet()){
-			s += a + " _ " + attributs.get(a)+"\r\n";
-		}
-		return s;
+		return gson.toJson(attributs);
 	}
 }

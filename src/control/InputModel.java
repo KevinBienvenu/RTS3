@@ -10,6 +10,7 @@ import control.KeyMapper.KeyEnum;
 import data.Data;
 import game.Game;
 import model.Objet;
+import model.ObjetPool;
 
 public class InputModel implements java.io.Serializable{
 
@@ -71,11 +72,9 @@ public class InputModel implements java.io.Serializable{
 		}
 		// On vérifie l'objet sous la souris
 		idObjetMouse = Data.nullValue;
-		for(Objet o : Game.world.objets.values()){
-			
-		}
+
 		updateSelectionRectangle();
-		SelectionHelper.updateSelection(this, Game.world.objets.values());
+		SelectionHelper.updateSelection(this, ObjetPool.getObjets());
 	}
 	
 	private void updateSelectionRectangle() {

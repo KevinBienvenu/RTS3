@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="jar/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="jar/lwjgl.jar"/>
 	<classpathentry kind="lib" path="jar/slick.jar"/>
+	<classpathentry kind="lib" path="jar/gson-2.3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

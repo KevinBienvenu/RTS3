@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 
 import game.World;
 import model.Objet;
+import model.ObjetPool;
 
 public class GraphicEngine {
 
@@ -25,14 +26,17 @@ public class GraphicEngine {
 		}
 		g.fillRect(o.x-10f, o.y-10f, 20f, 20f);
 		g.setColor(Color.white);
-		g.drawString(o.name, o.x-g.getFont().getWidth(o.name)/2, o.y-10);
+		g.drawString(o.name+" "+o.id+" "+o.isInWorld, o.x-g.getFont().getWidth(o.name)/2, o.y-10);
 	}
 	
 	
 	public static void update(Graphics g, World world){
 		// Draw selection rectangle
-		for(Objet o : world.objets.values()){
-			draw(g, o);
+		for(Objet o : ObjetPool.getObjets()){
+			if(o.isInWorld){
+				draw(g, o);
+			}
+			
 		}
 		g.setColor(Color.green);
 		g.draw(GraphicsData.currentPlayerInputModel.selectionRectangle);
