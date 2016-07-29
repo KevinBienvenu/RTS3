@@ -17,11 +17,12 @@ import com.google.gson.stream.JsonReader;
 public class DataObjet {
 	// Generic fields
 	public HashMap<Attributs, Float> attributs = new HashMap<Attributs, Float>();
+	public HashMap<Attributs, String> attributsString = new HashMap<Attributs, String>();
 	private static String location ="";
 	public static Gson gson = new Gson();
 	public DataObjet(String filename){
 		try {
-			attributs = gson.fromJson(new JsonReader(new FileReader(location+filename)), new TypeToken<HashMap<Attributs, Float>>(){}.getType());
+			attributsString = gson.fromJson(new JsonReader(new FileReader(location+filename)), new TypeToken<HashMap<Attributs, String>>(){}.getType());
 			System.out.println(this);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

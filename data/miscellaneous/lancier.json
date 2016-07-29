@@ -1,6 +1,3 @@
 {
-speed:30,
-maxlifepoints:100,
-isSelectionnable:1,
-radius:10
+prototype:chevalier
 }
