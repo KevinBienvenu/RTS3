@@ -45,11 +45,11 @@ public class Objet implements Serializable{
 	public int idTarget;
 	public int idWork;
 	
-	protected Objet(float x, float y, String name, int team){
+	protected Objet(){
 		this.id = World.generateUniqueId();
-		this.init(x,y,name,team);
-		
+		this.actions = new Vector<EnumAction>();
 	}
+	
 	public void init(float x, float y ,String name, int team){
 		this.x = x;
 		this.y = y;
@@ -57,8 +57,8 @@ public class Objet implements Serializable{
 		this.team = team;
 		// TODO : créer les actions uniques et les linker plutôt que de les créer, ici on teste alors c'est bon...
 		this.actionCourante = EnumAction.ActionDefault;
-		this.actions = new Vector<EnumAction>();
 		// Temporary
+		this.actions.clear();
 		for(EnumAction action : EnumAction.values()){
 			this.actions.add(action);
 		}
@@ -68,8 +68,13 @@ public class Objet implements Serializable{
 		toReturn.init(x, y, name, team);
 		return toReturn;
 	}
-	
+	public void destroy(){
+		this.isInWorld=false;
+	}
 	public void update(InputModel im){
+		if(!this.isInWorld){
+			return;
+		}
 		// au début on vérifie si on doit pas changer d'action
 		for(EnumAction action : this.actions){
 			if(Action.actions.get(action).checkChangeAction(im, this)){
@@ -80,10 +85,11 @@ public class Objet implements Serializable{
 		if(getCurrentAction().shouldUpdate(im, this)){
 			getCurrentAction().update(im, this);
 		}
+		// Behaviour linked to controllers
 		// check mouseOver
-		if(isMouseOver(im)){
-			im.idObjetMouse = id;
-		}
+//		if(isMouseOver(im)){
+//			im.idObjetMouse = id;
+//		}
 	}
 	
 	/*
@@ -129,6 +135,9 @@ public class Objet implements Serializable{
 	}
 	
 	public boolean isMouseOver(InputModel im){
+		if(!this.isInWorld){
+			return false;
+		}
 		if(getAttribut(Attributs.isRect)!=Data.nullValue){
 			// selection box rectangle
 			

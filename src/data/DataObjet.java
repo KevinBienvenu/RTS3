@@ -23,12 +23,16 @@ public class DataObjet {
 	public DataObjet(String filename){
 		try {
 			attributsString = gson.fromJson(new JsonReader(new FileReader(location+filename)), new TypeToken<HashMap<Attributs, String>>(){}.getType());
-			System.out.println(this);
+			System.out.println(filename);
+			System.out.println(this.toStringPre());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	public String toString(){
 		return gson.toJson(attributs);
+	}
+	public String toStringPre(){
+		return gson.toJson(attributsString);
 	}
 }

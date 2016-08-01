@@ -16,7 +16,7 @@ public class World {
 	 */
 	
 	public float sizeX, sizeY;
-	
+	public Objet[] objets;
 	public static int idObjet = 0;
 	public static int generateUniqueId(){idObjet++;return idObjet;}
 	 // Tous les objets en jeu
@@ -29,11 +29,12 @@ public class World {
 		
 		sizeX = map.sizeX;
 		sizeY = map.sizeY;
-		// TODO : cloner le vecteur ou créer les objets manuellement
+		
 		
 		
 		// Build the grid function of buildings
-		buildGrid();
+		
+		
 	}
 	
 	public void buildGrid(){
@@ -41,10 +42,14 @@ public class World {
 		 * Loop over vector of objets and find cells occupied by buildings
 		 */
 		grid = new MapGrid(0,sizeX,0,sizeY);
-		for(Objet o : ObjetPool.getObjets()){
+		for(Objet o : objets){
 			// TODO : updater la grille en fonction des objets inamovibles
 		}
 		
+	}
+	
+	public Objet[] getObjets(){
+		return objets;
 	}
 	
 	public void update(InputModel im){
@@ -52,16 +57,22 @@ public class World {
 		 * 
 		 * Update the world state
 		 */
-		for(Objet o : ObjetPool.getObjets()){
+		for(Objet o : objets){
 			if(o.isInWorld){
 				o.update(im);
 			}
 		}
 		
+		//Update mapgrid
+		
+		
+		//Resolve physic with mapgrid state
+		// For the time being raw collision
+		
 	}
 	
 	public Objet getObjetById(int id){
-		for(Objet o : ObjetPool.getObjets()){
+		for(Objet o : objets){
 			if(o.id == id && o.isInWorld ){
 				return o;
 			}

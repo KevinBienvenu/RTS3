@@ -3,6 +3,7 @@ package graphic;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import game.Game;
 import game.World;
 import model.Objet;
 import model.ObjetPool;
@@ -32,7 +33,7 @@ public class GraphicEngine {
 	
 	public static void update(Graphics g, World world){
 		// Draw selection rectangle
-		for(Objet o : ObjetPool.getObjets()){
+		for(Objet o : Game.world.getObjets()){
 			if(o.isInWorld){
 				draw(g, o);
 			}

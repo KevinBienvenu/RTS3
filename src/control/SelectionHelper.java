@@ -3,12 +3,15 @@ package control;
 import java.util.Collection;
 
 import control.KeyMapper.KeyEnum;
+import data.Attributs;
+import data.Data;
+import game.Game;
 import model.Objet;
 
 public class SelectionHelper {
 	
 	public static float seuilDistanceClick = 150f;
-
+	
 	public static void updateSelection(InputModel im, Objet[] objects){
 		if(!im.rectangleIsNone() && !im.isDown(KeyEnum.AjouterSelection)){
 			im.selection.clear();
@@ -17,6 +20,9 @@ public class SelectionHelper {
 		boolean flag = false;
 		for(Objet o : objects){
 			// suppression de la selection courant
+			if(o.isInWorld && !(Game.getData(o,Attributs.isSelectionnable)==Data.True)){
+				continue;
+			}
 			// ajout vis à vis du rectangle
 			if(o.team == im.team 
 					&& o.x>im.selectionRectangle.getMinX()
@@ -42,7 +48,8 @@ public class SelectionHelper {
 					distanceMinimale = distance;
 				}
 			}
-			if(om!=null){
+			if(om!=null && Game.getData(om,Attributs.isSelectionnable)==Data.True){
+				System.out.println(om.name);
 				im.selection.add(om);
 				flag = true;
 			}
@@ -53,7 +60,7 @@ public class SelectionHelper {
 				// suppression de la selection courant
 				// ajout vis à vis du rectangle
 				if(o.name == im.selection.get(0).name 
-						&& !im.selection.contains(o)){
+						&& !im.selection.contains(o) && o.team==im.selection.get(0).team && Game.getData(o,Attributs.isSelectionnable)==Data.True){
 					im.selection.addElement(o);
 				}
 			}

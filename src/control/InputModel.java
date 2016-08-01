@@ -30,7 +30,7 @@ public class InputModel implements java.io.Serializable{
 	private float anchorX;
 	private float anchorY;
 	
-	public int idObjetMouse;
+	private int idObjetMouse;
 
 	
 	
@@ -72,9 +72,14 @@ public class InputModel implements java.io.Serializable{
 		}
 		// On vérifie l'objet sous la souris
 		idObjetMouse = Data.nullValue;
-
+		for(Objet o : Game.world.getObjets()){
+			if(o.isMouseOver(this)){
+				idObjetMouse = o.id;
+			}
+		}
+		
 		updateSelectionRectangle();
-		SelectionHelper.updateSelection(this, ObjetPool.getObjets());
+		SelectionHelper.updateSelection(this, Game.world.getObjets());
 	}
 	
 	private void updateSelectionRectangle() {
@@ -111,6 +116,11 @@ public class InputModel implements java.io.Serializable{
 	}
 	public boolean isPressed(KeyEnum key){
 		return pressed.contains(key);
+	}
+
+	public int idObjetMouse() {
+
+		return idObjetMouse;
 	}
 	
 	

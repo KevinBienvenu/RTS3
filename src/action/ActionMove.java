@@ -8,6 +8,7 @@ import game.Game;
 import main.Main;
 import model.Objet;
 import model.ObjetPool;
+import model.ObjetUtil;
 import pathfinding.Case;
 
 public class ActionMove extends Action{
@@ -29,20 +30,30 @@ public class ActionMove extends Action{
 
 	@Override
 	public void updateAction(InputModel im, Objet o) {
+		//TODO : Make it work when target change case
 		if(o.casesPathfinding.size()>1){
 			Case c = Game.world.grid.getCase(o.casesPathfinding.get(0));
 			moveToward(o,c.x,c.y);
 		} else {
 			Objet o2 = Game.world.getObjetById(o.idTarget);
-			moveToward(o,o2.x,o2.y);
+			if(o2!=null){
+				moveToward(o,o2.x,o2.y);
+			}
+			
 		}
 	}
 
 	@Override
 	public void handleChangeAction(InputModel im, Objet o) {
+		// Get target
+		Objet o2 = Game.world.getObjetById(o.idTarget);
 		// condition d'arrêt
-		Objet o2 = ObjetPool.getObjets()[o.idTarget];
-		if((o.x-o2.x)*(o.x-o2.x)+(o.y-o2.y)*(o.y-o2.y)<10){
+		if(ObjetUtil.isNear(o, o2)){
+			if(o2.name.equals("checkpoint")){
+				//Kill the checkpoint
+				o2.destroy();
+				o.idTarget=Data.nullValue;
+			}
 			o.changeAction(EnumAction.ActionDefault, im);
 		}
 		// gestion du click droit (déplacement uniquement)
@@ -98,8 +109,21 @@ public class ActionMove extends Action{
 	@Override
 	public boolean checkChangeAction(InputModel im, Objet o) {
 		// gestion du click droit (déplacement uniquement)
-		if(im.selection.contains(o) && im.isPressed(KeyEnum.RightClick) && im.idObjetMouse==Data.nullValue){
-			o.idTarget = Objet.getObjet(im.x, im.y, "checkpoint", o.team).id;
+		if(im.selection.contains(o) && im.isPressed(KeyEnum.RightClick) ){
+			//Destroy previous target
+			Objet o2 = Game.world.getObjetById(o.idTarget);
+			if(o2!=null && o2.name.equals("checkpoint")){
+				o2.destroy();
+			}
+			// Click on void
+			// If we want only one checkpoint update idObjet mouse each time in the if..
+			if(im.idObjetMouse()==Data.nullValue){
+				o.idTarget = Objet.getObjet(im.x, im.y, "checkpoint", o.team).id;
+			}
+			// Click on Id
+			else{
+				o.idTarget = im.idObjetMouse();
+			}
 			return true;
 		}
 		return false;

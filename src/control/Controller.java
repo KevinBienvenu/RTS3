@@ -3,6 +3,7 @@ package control;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
 
+import data.Data;
 import game.Game;
 
 public class Controller {
@@ -13,6 +14,7 @@ public class Controller {
 	InputModel[] inputs;
 	int idCurrentPlayer = 1;
 	KeyMapper keymapper;
+	
 	
 	public Controller(int nPlayers){
 		keymapper = new KeyMapper();

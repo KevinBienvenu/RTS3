@@ -1,16 +1,25 @@
 package model;
 
+import java.util.Iterator;
+import java.util.stream.Stream;
+
+import game.Game;
+
 public class ObjetPool {
 
 	// Class for pulling and adding an object (avoid loading in memory a lot of objects)
-	static Objet[] objets;
-	static int poolSize = 100;
+	private static Objet[] objets;
+	private static int poolSize = 100;
+	public static Iterator<Objet> aliveIterator ;
 	public static void init(){
 		objets = new Objet[poolSize];
+
 		for(int i =0; i<poolSize;i++){
-			objets[i] = new Objet(0,0,"lancier",0);
+			objets[i] = new Objet();
 		}
+
 	}
+
 	public static Objet pull(){
 		
 		for(int i = 0 ; i<objets.length; i++){
@@ -19,6 +28,7 @@ public class ObjetPool {
 				return objets[i];
 			}
 		}
+		
 		// Issue of memory allocate a doubled size array and print a Gilles message...
 		System.out.println("Tu sais pas gérer ta mémoire enculé ....");
 		Objet[] newArray = new Objet[objets.length*2];
@@ -28,8 +38,11 @@ public class ObjetPool {
 			if(i<objets.length){
 				newArray[i] = objets[i];
 			}
-			
+			else{
+				newArray[i] = new Objet();
+			}
 		}
+		objets = newArray;
 		
 		return pull();
 	}
@@ -54,11 +67,12 @@ public class ObjetPool {
 		}
 		return  result;
 	}
-	public static Objet[] getObjets(){
-		return objets;
-	}
-	
-	public void push(Objet o){
+
+
+	public static void assignToWorld() {
+		Game.world.objets = objets;
 		
 	}
+	
+
 }

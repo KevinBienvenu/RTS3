@@ -44,6 +44,7 @@ public class Case {
 		this.sizeY = y1-y;
 	}
 	
+	
 	public String toString(){
 		String s ="";
 		s+= "case "+id+" = x:" + x+" y:"+y+"   sizeX:"+sizeX+" sizeY:"+sizeY;

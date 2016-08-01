@@ -20,9 +20,12 @@ public class Map {
 		objets.put(tempo.id, tempo);
 		tempo = Objet.getObjet(200,100,"chevalier", 1);
 		objets.put(tempo.id, tempo);
+		tempo = Objet.getObjet(300,100,"soldat", 1);
+		objets.put(tempo.id, tempo);
 		tempo = Objet.getObjet(100,300,"lancier", 2);
 		objets.put(tempo.id, tempo);
 		tempo = Objet.getObjet(200,300,"lancier", 2);
 		objets.put(tempo.id, tempo);
+
 	}
 }

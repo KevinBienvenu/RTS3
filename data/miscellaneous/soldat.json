@@ -1,0 +1,6 @@
+{
+speed:40,
+maxlifepoints:100,
+isSelectionnable:1,
+radius:10
+}

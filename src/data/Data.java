@@ -18,6 +18,8 @@ public class Data {
 	public HashMap<String, DataObjet> datas;
 
 	public static final int nullValue = -1;
+	public static final int True = 1;
+	public static final int False = 0;
 	
 	public Data(){
 		datas = new HashMap<String, DataObjet>();
@@ -31,30 +33,27 @@ public class Data {
 		
 		// Do the prototyping (overrides non existing attributes
 		for(String s : datas.keySet()){
-			overrides(s,s);
+			overrides(s);
 		}
 		// Convert to float ...
 		convertFloat();
 		
 		//Print result to see if i am wrong
 		for(String name : files.keySet()){
+			System.out.println(name);
 			System.out.println(this.datas.get(name));
-			
 		}
 		
 	}
 	
-	public void overrides(String s,String parent){
+	public String overrides(String s){
 		// On cherche le parent le plus vieux
-		if(datas.get(parent).attributsString.containsKey(Attributs.prototype)){
-			// Find parent...
-			System.out.println(parent);
-			overrides(s,datas.get(s).attributsString.get(Attributs.prototype));
-			
-		}else{
-			////On a trouvé le parent le plus ancien donc on Merge 
-			merge(datas.get(s).attributsString,datas.get(parent).attributsString);
+		if(datas.get(s).attributsString.containsKey(Attributs.prototype)){
+			// Merge parent...
+			merge(s,overrides(datas.get(s).attributsString.get(Attributs.prototype)));
 		}
+		return s;
+		
 		
 	}
 	public void convertFloat(){
@@ -68,10 +67,12 @@ public class Data {
 			}
 		}
 	}
-	public static void merge(HashMap<Attributs,String> child,HashMap<Attributs,String> parent){
-		for(Attributs s : parent.keySet()){
-			if(!child.containsKey(s)){
-				child.put(s, parent.get(s));
+	public void merge(String child,String parent){
+		HashMap<Attributs,String> c = datas.get(child).attributsString;
+		HashMap<Attributs,String> p = datas.get(parent).attributsString;
+		for(Attributs s : p.keySet()){
+			if(!c.containsKey(s)){
+				c.put(s, p.get(s));
 			}
 		}
 	}

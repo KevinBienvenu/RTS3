@@ -12,9 +12,11 @@ import action.Action;
 import action.ActionDefault;
 import action.ActionMove;
 import control.Controller;
+import data.Attributs;
 import data.Data;
 import graphic.GraphicEngine;
 import graphic.GraphicsData;
+import model.Objet;
 import model.ObjetPool;
 import physic.PhysicEngine;
 import sound.SoundEngine;
@@ -22,13 +24,13 @@ import sound.SoundEngine;
 public class Game extends BasicGame {
 	
 	
-	GraphicEngine graphicEngine;
-	PhysicEngine physicEngine;
-	SoundEngine soundEngine;
-	Controller controller;
+	static GraphicEngine graphicEngine;
+	static PhysicEngine physicEngine;
+	static SoundEngine soundEngine;
+	static Controller controller;
+	static Player[] players;
 	
 	public static World world;
-	
 	// TODO : à mettre au bon endroit
 	public static Data data;
 
@@ -50,12 +52,16 @@ public class Game extends BasicGame {
 	@Override
 	public void init(GameContainer arg0) throws SlickException {
 		// TODO Auto-generated method stub
-		
+		int nbPlayers = 2;
 		//Init engines
 		ObjetPool.init();
 		physicEngine = new PhysicEngine();
 		soundEngine = new SoundEngine();
-		controller = new Controller(2);
+		controller = new Controller(nbPlayers);
+		players = new Player[nbPlayers+1];
+		for(int i = 0 ; i<nbPlayers+1;i++){
+			players[i] = new Player(i);
+		}
 		
 		GraphicsData.currentPlayerInputModel = controller.getCurrentPlayerInputModel();
 		
@@ -66,6 +72,8 @@ public class Game extends BasicGame {
 		// Idéalement faut un helper pour tout loader ça sera plus clair
 		Action.loadActions();
 		world = new World(2,new Map());
+		ObjetPool.assignToWorld();
+		world.buildGrid();
 		
 	}
 
@@ -78,6 +86,9 @@ public class Game extends BasicGame {
 		physicEngine.update();
 	}
 	
+	public static Float getData(Objet o,Attributs attribut){
+		return players[o.team].getData(o.name,attribut);
+	}
 	
 	public void updateController(GameContainer gc){
 		controller.getInputs(gc.getInput());

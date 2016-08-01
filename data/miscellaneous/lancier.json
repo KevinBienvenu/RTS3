@@ -1,3 +1,5 @@
 {
-prototype:chevalier
+prototype:chevalier,
+speed:30
+
 }
