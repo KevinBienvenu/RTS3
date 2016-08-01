@@ -72,7 +72,8 @@ public class InputModel implements java.io.Serializable{
 		}
 		// On vérifie l'objet sous la souris
 		idObjetMouse = Data.nullValue;
-		for(Objet o : Game.world.getObjets()){
+		for(Integer i : Game.world.getObjets()){
+			Objet o = Game.world.getObjetById(i);
 			if(o.isMouseOver(this)){
 				idObjetMouse = o.id;
 			}

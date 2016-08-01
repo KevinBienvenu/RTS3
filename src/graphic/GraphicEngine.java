@@ -33,11 +33,8 @@ public class GraphicEngine {
 	
 	public static void update(Graphics g, World world){
 		// Draw selection rectangle
-		for(Objet o : Game.world.getObjets()){
-			if(o.isInWorld){
-				draw(g, o);
-			}
-			
+		for(Integer i : Game.world.getObjets()){	
+				draw(g, Game.world.getObjetById(i));
 		}
 		g.setColor(Color.green);
 		g.draw(GraphicsData.currentPlayerInputModel.selectionRectangle);

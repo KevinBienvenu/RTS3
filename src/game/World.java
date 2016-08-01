@@ -16,34 +16,35 @@ public class World {
 	 */
 	
 	public float sizeX, sizeY;
-	public int[] objets;
 	
-	public int[] teamObjets;
+	// Different way of accessing objets
+	public ObjetPool objets;
+	public Vector<Integer> aliveObjets;
+	public Vector<Vector<Integer>> teamObjets;
+	
+	
+	
 	
 	public static int idObjet = 0;
-	public static int generateUniqueId(){idObjet++;return idObjet;}
+	public static int idTeamObjet = 0;
+	public static int generateUniqueId(){return idObjet++;};
+	public static int generateUniqueTeamId(){return idTeamObjet++;};
 	 // Tous les objets en jeu
 	public Action[] actions ; // On instanciera une seule fois toutes les actions du monde ...
 	public MapGrid grid; // La grille pour le pathfinding
 	
 	public World(int nPlayers,Map map){
-
 		actions = new Action[4];
-		
 		sizeX = map.sizeX;
 		sizeY = map.sizeY;
-		
-		
+		objets = new ObjetPool();
 		// Team objets 
-		teamObjets = new int[nPlayers];
-//		for(int i = 0 ; i<teamObjets.length;i++){
-//			teamObjets[i] = new Vector<Integer>();
-//		}
-		
-		
+		aliveObjets = new Vector<Integer>();
+		teamObjets = new Vector<Vector<Integer>>();
+		for(int i = 0 ; i<nPlayers+1;i++){
+			teamObjets.add(new Vector<Integer>());
+		}
 		// Build the grid function of buildings
-		
-		
 	}
 	
 	public void buildGrid(){
@@ -54,17 +55,32 @@ public class World {
 //		for(Objet o : objets){
 //			// TODO : updater la grille en fonction des objets inamovibles
 //		}
-		
 	}
 	
-	public Objet[] getObjets(){
+	public Vector<Integer> getObjets(){
+		return aliveObjets;
+	}
+	public Objet[] getAllObjets(){
 		return ObjetPool.objets;
 	}
 	
 	public void updateReferences(){
 		// Repartit les int dans les tableaux (a chaque fin de tour)
 		// TODO : Est ce qu'on tri par id ? (temps d'acces)
-		
+		aliveObjets.clear();
+		for(int i =0;i<teamObjets.size();i++){
+			teamObjets.clear();
+		}
+		for(Objet o : getAllObjets()){
+			if(o.isInWorld){
+				aliveObjets.addElement(o.id);
+			}
+			for(int i = 0;i<teamObjets.size();i++){
+				if(o.team==i){
+					
+				}
+			}
+		}
 	}
 	
 	public void update(InputModel im){
@@ -72,27 +88,19 @@ public class World {
 		 * 
 		 * Update the world state
 		 */
-		for(Objet o : getObjets()){
-			if(o.isInWorld){
-				o.update(im);
-			}
+		for(Integer i : getObjets()){
+			getObjetById(i).update(im);
 		}
-		
 		//Update mapgrid
-		
-		
+		//Update references
+		updateReferences();
 		//Resolve physic with mapgrid state
 		// For the time being raw collision
 		
 	}
 	
 	public Objet getObjetById(int id){
-		for(Objet o : getObjets()){
-			if(o.id == id && o.isInWorld ){
-				return o;
-			}
-		}
-		return null;
+		return objets.objets[id];
 	}
 	
 	

@@ -1,24 +1,26 @@
 package control;
 
-import java.util.Collection;
+import game.Game;
 
+import java.util.Vector;
+
+import model.Objet;
 import control.KeyMapper.KeyEnum;
 import data.Attributs;
 import data.Data;
-import game.Game;
-import model.Objet;
 
 public class SelectionHelper {
 	
 	public static float seuilDistanceClick = 150f;
 	
-	public static void updateSelection(InputModel im, Objet[] objects){
+	public static void updateSelection(InputModel im, Vector<Integer> objects){
 		if(!im.rectangleIsNone() && !im.isDown(KeyEnum.AjouterSelection)){
 			im.selection.clear();
 		}
 		// flag qui se souvient si une unité a été selectionnée par le rectangle
 		boolean flag = false;
-		for(Objet o : objects){
+		for(Integer i : objects){
+			Objet o = Game.world.getObjetById(i);
 			// suppression de la selection courant
 			if(o.isInWorld && !(Game.getData(o,Attributs.isSelectionnable)==Data.True)){
 				continue;
@@ -39,7 +41,8 @@ public class SelectionHelper {
 		if(!im.rectangleIsNone() && !flag){
 			Objet om = null;
 			float distanceMinimale = 0, distance = 0;
-			for(Objet o: objects){
+			for(Integer i : objects){
+				Objet o = Game.world.getObjetById(i);
 				distance = (o.x-im.x)*(o.x-im.x)+(o.y-im.y)*(o.y-im.y);
 				if(o.team == im.team &&(
 						(om == null && distance<seuilDistanceClick)
@@ -56,7 +59,8 @@ public class SelectionHelper {
 		}
 		// gestion de la selection globale
 		if(flag && im.isDown(KeyEnum.ToutSelection) && im.selection.size()==1){
-			for(Objet o : objects){
+			for(Integer i : objects){
+				Objet o = Game.world.getObjetById(i);
 				// suppression de la selection courant
 				// ajout vis à vis du rectangle
 				if(o.name == im.selection.get(0).name 
