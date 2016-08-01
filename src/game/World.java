@@ -1,12 +1,12 @@
 package game;
 
-import java.util.HashMap;
+import java.util.Vector;
 
-import action.Action;
-import control.InputModel;
 import model.Objet;
 import model.ObjetPool;
 import pathfinding.MapGrid;
+import action.Action;
+import control.InputModel;
 
 
 public class World {
@@ -16,7 +16,10 @@ public class World {
 	 */
 	
 	public float sizeX, sizeY;
-	public Objet[] objets;
+	public int[] objets;
+	
+	public int[] teamObjets;
+	
 	public static int idObjet = 0;
 	public static int generateUniqueId(){idObjet++;return idObjet;}
 	 // Tous les objets en jeu
@@ -31,6 +34,12 @@ public class World {
 		sizeY = map.sizeY;
 		
 		
+		// Team objets 
+		teamObjets = new int[nPlayers];
+//		for(int i = 0 ; i<teamObjets.length;i++){
+//			teamObjets[i] = new Vector<Integer>();
+//		}
+		
 		
 		// Build the grid function of buildings
 		
@@ -42,14 +51,20 @@ public class World {
 		 * Loop over vector of objets and find cells occupied by buildings
 		 */
 		grid = new MapGrid(0,sizeX,0,sizeY);
-		for(Objet o : objets){
-			// TODO : updater la grille en fonction des objets inamovibles
-		}
+//		for(Objet o : objets){
+//			// TODO : updater la grille en fonction des objets inamovibles
+//		}
 		
 	}
 	
 	public Objet[] getObjets(){
-		return objets;
+		return ObjetPool.objets;
+	}
+	
+	public void updateReferences(){
+		// Repartit les int dans les tableaux (a chaque fin de tour)
+		// TODO : Est ce qu'on tri par id ? (temps d'acces)
+		
 	}
 	
 	public void update(InputModel im){
@@ -57,7 +72,7 @@ public class World {
 		 * 
 		 * Update the world state
 		 */
-		for(Objet o : objets){
+		for(Objet o : getObjets()){
 			if(o.isInWorld){
 				o.update(im);
 			}
@@ -72,7 +87,7 @@ public class World {
 	}
 	
 	public Objet getObjetById(int id){
-		for(Objet o : objets){
+		for(Objet o : getObjets()){
 			if(o.id == id && o.isInWorld ){
 				return o;
 			}

@@ -8,7 +8,7 @@ import game.Game;
 public class ObjetPool {
 
 	// Class for pulling and adding an object (avoid loading in memory a lot of objects)
-	private static Objet[] objets;
+	public static Objet[] objets;
 	private static int poolSize = 100;
 	public static Iterator<Objet> aliveIterator ;
 	public static void init(){
@@ -69,10 +69,6 @@ public class ObjetPool {
 	}
 
 
-	public static void assignToWorld() {
-		Game.world.objets = objets;
-		
-	}
 	
 
 }

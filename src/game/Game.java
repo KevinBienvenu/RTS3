@@ -72,7 +72,7 @@ public class Game extends BasicGame {
 		// Idéalement faut un helper pour tout loader ça sera plus clair
 		Action.loadActions();
 		world = new World(2,new Map());
-		ObjetPool.assignToWorld();
+		
 		world.buildGrid();
 		
 	}
